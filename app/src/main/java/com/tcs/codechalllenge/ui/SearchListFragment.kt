@@ -1,10 +1,8 @@
 package com.tcs.codechalllenge.ui
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
-import android.widget.ImageView
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -20,7 +18,7 @@ class SearchListFragment : Fragment() {
     private lateinit var binding: FragmentListBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var listViewModel: SearchListViewModel
-    private lateinit var searchListAdapter : SearchListAdapter
+    private lateinit var searchListAdapter: SearchListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +32,8 @@ class SearchListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = binding.mRecyclerView
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL ,false)
+        recyclerView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         searchListAdapter = SearchListAdapter()
         recyclerView.adapter = searchListAdapter
         listViewModel = ViewModelProvider(this).get(SearchListViewModel::class.java)
@@ -42,11 +41,13 @@ class SearchListFragment : Fragment() {
             searchListAdapter.addList(it)
         })
         listViewModel.errorResponse.observe(viewLifecycleOwner, {
-            val builder = AlertDialog.Builder(this.context)
-            builder.setTitle("Error")
-            builder.setMessage("Something went wrong please try again later.")
-            builder.setPositiveButton(android.R.string.yes) { _, _ -> }
-            builder.show()
+            if (it) {
+                val builder = AlertDialog.Builder(this.context)
+                builder.setTitle("Error")
+                builder.setMessage("Something went wrong please try again later.")
+                builder.setPositiveButton(android.R.string.yes) { _, _ -> }
+                builder.show()
+            }
         })
     }
 
